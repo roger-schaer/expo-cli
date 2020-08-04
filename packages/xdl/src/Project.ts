@@ -1042,7 +1042,7 @@ async function _getForPlatformAsync(
   platform: Platform,
   { errorCode, minLength }: { errorCode: ErrorCode; minLength?: number }
 ): Promise<string> {
-  let fullUrl = `${url}&platform=${platform}`;
+  const fullUrl = `${url}&platform=${platform}`;
   let response;
 
   try {
@@ -2033,7 +2033,7 @@ function getManifestHandler(projectRoot: string) {
 export async function getSignedManifestStringAsync(
   manifest: ExpoConfig,
   // NOTE: we currently ignore the currentSession that is passed in, see the note below about analytics.
-  currentSession: { sessionSecret: string }
+  currentSession: { sessionSecret?: string; accessToken?: string }
 ) {
   const manifestString = JSON.stringify(manifest);
   if (_cachedSignedManifest.manifestString === manifestString) {
