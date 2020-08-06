@@ -3,11 +3,7 @@ import { CredentialsProvider } from '../../../credentials/provider';
 import { CredentialsSource, Workflow } from '../../../easJson';
 import log from '../../../log';
 import prompts from '../../../prompts';
-
-const platformMapName = {
-  ios: 'iOS',
-  android: 'Android',
-};
+import { platformMapName } from './utils/misc';
 
 async function ensureCredentialsAutoAsync(
   provider: CredentialsProvider,

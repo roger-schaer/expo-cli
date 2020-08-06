@@ -18,7 +18,7 @@ import AndroidBuilder from './builders/AndroidBuilder';
 import iOSBuilder from './builders/iOSBuilder';
 import { Builder, BuilderContext } from './types';
 import { ensureGitStatusIsCleanAsync, makeProjectTarballAsync } from './utils/git';
-import { printBuildResults, printLogsUrls } from './utils/misc';
+import { platformMapName, printBuildResults, printLogsUrls } from './utils/misc';
 
 interface BuildOptions {
   platform: BuildCommandPlatform;
@@ -55,7 +55,10 @@ async function buildAction(projectDir: string, options: BuildOptions): Promise<v
     projectName: ctx.projectName,
   });
   const scheduledBuilds = await startBuildsAsync(ctx, projectId, options.platform);
-  printLogsUrls(ctx.accountName, scheduledBuilds);
+
+  log.newLine();
+  await printLogsUrls(ctx.accountName, scheduledBuilds);
+  log.newLine();
 
   if (options.wait) {
     const builds = await waitForBuildEndAsync(
@@ -133,7 +136,7 @@ async function startBuildAsync(
     );
 
     const job = await builder.prepareJobAsync(archiveUrl);
-    log('Starting build');
+    log(`Starting ${platformMapName[job.platform]} build`);
     const { buildId } = await client.postAsync(`projects/${projectId}/builds`, {
       job: job as any,
     });
